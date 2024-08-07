@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnqjveavomlbx"]
+
+[ext_resource type="Texture2D" uid="uid://72bba5claq1a" path="res://game/assets/icons/svg/Account circle.svg" id="1_l0dk5"]
+[ext_resource type="Script" path="res://game/logic/Icon.cs" id="2_03hi3"]
+
+[node name="Icon" type="TextureRect"]
+offset_right = 24.0
+offset_bottom = 24.0
+texture = ExtResource("1_l0dk5")
+script = ExtResource("2_03hi3")
