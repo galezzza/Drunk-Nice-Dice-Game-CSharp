@@ -8,3 +8,4 @@ offset_right = 24.0
 offset_bottom = 24.0
 texture = ExtResource("1_l0dk5")
 script = ExtResource("2_03hi3")
+colors = 1
