@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Druck Nice Dice Game CSharp"
+run/main_scene="res://game/logic/icon.tscn"
+config/features=PackedStringArray("4.2", "C#", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Globals="*res://game/logic/globals/Globals.cs"
+
+[display]
+
+window/size/viewport_width=360
+window/size/viewport_height=800
+window/stretch/mode="viewport"
+
+[dotnet]
+
+project/assembly_name="Druck Nice Dice Game CSharp"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+anti_aliasing/quality/msaa_3d=3
