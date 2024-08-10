@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Druck Nice Dice Game CSharp"
-run/main_scene="res://game/logic/icon.tscn"
+run/main_scene="res://game/logic/empty_scene_fro_tests___to_delete_later.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
 config/icon="res://icon.svg"
 
@@ -28,6 +28,10 @@ window/stretch/mode="viewport"
 [dotnet]
 
 project/assembly_name="Druck Nice Dice Game CSharp"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/my_components/plugin.cfg")
 
 [rendering]
 
