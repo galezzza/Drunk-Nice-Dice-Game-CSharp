@@ -19,7 +19,6 @@ public partial class Icon : TextureRect
 	[Export]
 	private Colors colors = Colors.White;
 
-
 	public override void _Ready()
 	{
 		int index = (int) colors;

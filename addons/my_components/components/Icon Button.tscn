@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://j0yobrlahbbs"]
+[gd_scene load_steps=6 format=3 uid="uid://j0yobrlahbbs"]
 
+[ext_resource type="Script" path="res://addons/my_components/components/IconButton.cs" id="1_kd70b"]
 [ext_resource type="Texture2D" uid="uid://72bba5claq1a" path="res://game/assets/icons/svg/Account circle.svg" id="1_kegmb"]
+[ext_resource type="Theme" uid="uid://cj5mmbbgix3ro" path="res://game/logic/themes/Icon button Theme.tres" id="1_s2vmq"]
 [ext_resource type="Script" path="res://addons/my_components/components/Icon.cs" id="2_3v2be"]
+
+[sub_resource type="Theme" id="Theme_df3e8"]
 
 [node name="IconButton" type="Button"]
 anchors_preset = 8
@@ -17,8 +21,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme = ExtResource("1_s2vmq")
+script = ExtResource("1_kd70b")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -31,17 +37,30 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Icon" type="TextureRect" parent="PanelContainer/MarginContainer"]
+[node name="Icon" type="TextureRect" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = SubResource("Theme_df3e8")
 texture = ExtResource("1_kegmb")
 script = ExtResource("2_3v2be")
+
+[node name="State-layer container" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
