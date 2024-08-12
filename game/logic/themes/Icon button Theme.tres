@@ -15,7 +15,6 @@ corner_radius_bottom_left = 100
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bjlb"]
 
 [resource]
-IconButton/colors/Primary = Color(0.118381, 0.634257, 1, 1)
 IconButton/styles/disabled = SubResource("StyleBoxFlat_a5uj0")
 IconButton/styles/enabled = SubResource("StyleBoxFlat_r6lx1")
 IconButton/styles/focused = SubResource("StyleBoxFlat_dwacm")
