@@ -2,7 +2,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5uj0"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r6lx1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcntl"]
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
@@ -10,13 +10,13 @@ corner_radius_bottom_left = 100
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwacm"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lqvj5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mg1k4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bjlb"]
 
 [resource]
 IconButton/styles/disabled = SubResource("StyleBoxFlat_a5uj0")
-IconButton/styles/enabled = SubResource("StyleBoxFlat_r6lx1")
+IconButton/styles/enabled = SubResource("StyleBoxFlat_fcntl")
 IconButton/styles/focused = SubResource("StyleBoxFlat_dwacm")
-IconButton/styles/hovered = SubResource("StyleBoxFlat_lqvj5")
+IconButton/styles/hovered = SubResource("StyleBoxFlat_mg1k4")
 IconButton/styles/pressed = SubResource("StyleBoxFlat_3bjlb")

@@ -4,7 +4,7 @@ using System.ComponentModel.Design;
 
 public partial class Icon : TextureRect
 {
-	enum Colors
+	public enum IconColors
 	{
 		White,
 		Black,
@@ -17,11 +17,11 @@ public partial class Icon : TextureRect
 	}
 	
 	[Export]
-	private Colors colors = Colors.White;
+	private IconColors color = IconColors.White;
 
 	public override void _Ready()
 	{
-		int index = (int) colors;
+		int index = (int) color;
 		UpdateIconColor(index);
 	}
 
@@ -43,6 +43,12 @@ public partial class Icon : TextureRect
 		int index = (int) colorIndex;
 
 		SelfModulate = colorsList[index];
+	}
+
+	public void SetColor(IconColors iconColor)
+	{
+		int index = (int) iconColor;
+		UpdateIconColor(index);
 	}
 }
 	// public static Color white = new Color("FFFFFF");

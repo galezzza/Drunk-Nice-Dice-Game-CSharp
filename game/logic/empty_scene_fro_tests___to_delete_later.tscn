@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://72bba5claq1a" path="res://game/assets/icons/svg/Account circle.svg" id="1_l5de6"]
 [ext_resource type="Script" path="res://addons/my_components/components/Icon.cs" id="2_hnbgt"]
-[ext_resource type="PackedScene" uid="uid://j0yobrlahbbs" path="res://addons/my_components/components/Icon Button.tscn" id="3_ay6ms"]
+[ext_resource type="Script" path="res://addons/my_components/components/IconButton.cs" id="3_1o6by"]
 
 [node name="Empty scene fro tests - to delete later" type="Control"]
 layout_mode = 3
@@ -14,10 +14,18 @@ grow_vertical = 2
 
 [node name="Icon" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 24.0
+offset_bottom = 24.0
 texture = ExtResource("1_l5de6")
 script = ExtResource("2_hnbgt")
 
-[node name="IconButton" parent="." instance=ExtResource("3_ay6ms")]
+[node name="IconButton" type="Button" parent="."]
 layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -18.0
+offset_right = 4.0
+offset_bottom = 27.0
+grow_horizontal = 2
+script = ExtResource("3_1o6by")
