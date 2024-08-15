@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bf3kq3mdnf0o4"]
+[gd_scene load_steps=5 format=3 uid="uid://bf3kq3mdnf0o4"]
 
 [ext_resource type="Texture2D" uid="uid://72bba5claq1a" path="res://game/assets/icons/svg/Account circle.svg" id="1_l5de6"]
 [ext_resource type="Script" path="res://addons/my_components/components/Icon.cs" id="2_hnbgt"]
 [ext_resource type="Script" path="res://addons/my_components/components/IconButton.cs" id="3_1o6by"]
+[ext_resource type="Texture2D" uid="uid://bnnlddsa6c8qt" path="res://game/assets/icons/svg/Arrow forward.svg" id="5_36xuw"]
 
 [node name="Empty scene fro tests - to delete later" type="Control"]
 layout_mode = 3
@@ -20,12 +21,10 @@ texture = ExtResource("1_l5de6")
 script = ExtResource("2_hnbgt")
 
 [node name="IconButton" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -18.0
-offset_right = 4.0
-offset_bottom = 27.0
-grow_horizontal = 2
+layout_mode = 0
+offset_left = 50.0
+offset_top = 7.0
+offset_right = 58.0
+offset_bottom = 15.0
 script = ExtResource("3_1o6by")
+texture = ExtResource("5_36xuw")
