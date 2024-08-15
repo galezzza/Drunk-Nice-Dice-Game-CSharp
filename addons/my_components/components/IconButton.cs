@@ -6,9 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
+[Tool]
+
 public partial class IconButton : Button
 {
-
 	private PanelContainer stateLayerContainer = new PanelContainer();
 	private Icon icon = new Icon();
 
@@ -16,19 +17,58 @@ public partial class IconButton : Button
 	private static int iconButtonSize = 48;
 	private static int stateLayerContainerSize = 40;
 
+	private Texture2D _texture;
+
 	[Export]
-	private Texture2D texture = new Texture2D();
+	public Texture2D IconTexture
+	{
+		get => _texture;
+		set
+		{
+			_texture = value;
+			OnTextureSet(value);
+		}
+	}
+
+	private void OnTextureSet(Texture2D texture)
+	{
+		icon.Texture = texture;
+	}
 
 	public override void _Ready()
 	{	
+		if (Engine.IsEditorHint())
+		{
+			// Code to execute when in editor.
+			EditorPreview();
+		}
+
+		if (!Engine.IsEditorHint())
+		{
+			// Code to execute when in game.
+			RunReadyAtGame();
+		}
+	}
+
+	private void EditorPreview()
+	{
 		InitializeScene();
 
+		StyleBoxFlat styleBox12 = new StyleBoxFlat();
+		styleBox12.BgColor = new Color("849BEC", 0.08f);
+		styleBox12 = AllCornerRadiuses(styleBox12, 100);
+		stateLayerContainer.AddThemeStyleboxOverride("panel", styleBox12);
+	}
+
+	private void RunReadyAtGame()
+	{
+		InitializeScene();
+			
 		themeScript theme = GD.Load<themeScript>("res://game/logic/themes/Icon button Theme.tres");
 		this.Theme = InitializeTheme(theme, this.Name);
 
 		StyleBox stylebox = this.Theme.GetStylebox("enabled", this.Name);
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
-
 		if (this.Disabled)
 		{
 			SetDisabled();
@@ -36,8 +76,7 @@ public partial class IconButton : Button
 		else
 		{
 			InitializeButtonSignalsHandlers();
-		}
-		
+		}	
 	}
 
 	private void InitializeButtonSignalsHandlers(){
@@ -55,7 +94,7 @@ public partial class IconButton : Button
 
 		this.Size = new Vector2(iconButtonSize, iconButtonSize);
 
-		icon.Texture = this.texture;
+		icon.Texture = _texture;
 		MarginContainer marginContainer = new MarginContainer();
 		
 		this.AddChild(marginContainer);
