@@ -10,12 +10,32 @@ using System.Linq.Expressions;
 
 public partial class IconButton : Button
 {
+
+	private enum IconButtonStates
+	{
+		Enabled,
+		Hovered,
+		Focused,
+		Pressed,
+		Disabled
+	}
+	private static string[] states = new string[] {"enabled", "hovered", "focused", "pressed", "disabled"};
+
+
+	private Color styleboxDefaultColor;
+	private Color styleboxHoverColor;
+	private Color styleboxFocusColor;
+	private Color styleboxPressedColor;
+	private Color styleboxDisabledColor;
+
+
 	private PanelContainer stateLayerContainer = new PanelContainer();
 	private Icon icon = new Icon();
 
 
 	private static int iconButtonSize = 48;
 	private static int stateLayerContainerSize = 40;
+	private static int marginsValue = 8;
 
 	private Texture2D _texture;
 
@@ -30,6 +50,31 @@ public partial class IconButton : Button
 		}
 	}
 
+	private bool _isDisabled = false;
+	[Export] public bool IsDisabled
+	{
+		get => _isDisabled;
+		set
+		{
+			_isDisabled = value;
+			OnSetDisabled(value);
+		}
+	}
+	private void OnSetDisabled(bool value)
+	{
+		this.Disabled = value;
+		if (value == true)
+		{
+			UpdateIconButtonState(IconButtonStates.Disabled);
+			DisableButtonSignalsHandlers();
+		}
+		else
+		{
+			UpdateIconButtonState(IconButtonStates.Enabled);
+			InitializeButtonSignalsHandlers();
+		}
+	}
+
 	private void OnTextureSet(Texture2D texture)
 	{
 		icon.Texture = texture;
@@ -37,58 +82,59 @@ public partial class IconButton : Button
 
 	public override void _Ready()
 	{	
-		if (Engine.IsEditorHint())
-		{
-			// Code to execute when in editor.
-			EditorPreview();
-		}
-
-		if (!Engine.IsEditorHint())
-		{
-			// Code to execute when in game.
-			RunReadyAtGame();
-		}
-	}
-
-	private void EditorPreview()
-	{
-		InitializeScene();
-
-		StyleBoxFlat styleBox12 = new StyleBoxFlat();
-		styleBox12.BgColor = new Color("849BEC", 0.08f);
-		styleBox12 = AllCornerRadiuses(styleBox12, 100);
-		stateLayerContainer.AddThemeStyleboxOverride("panel", styleBox12);
-	}
-
-	private void RunReadyAtGame()
-	{
 		InitializeScene();
 			
 		Theme theme = GD.Load<Theme>("res://game/logic/themes/Main Theme.tres");
 		this.Theme = InitializeTheme(theme, "IconButton");
 
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
-		if (this.Disabled)
+		UpdateIconButtonState(IconButtonStates.Enabled);
+		if (IsDisabled == true)
 		{
-			SetDisabled();
+			UpdateIconButtonState(IconButtonStates.Disabled);
 		}
 		else
 		{
 			InitializeButtonSignalsHandlers();
-		}	
+		}
+
 	}
 
-	private void InitializeButtonSignalsHandlers(){
-		this.MouseEntered += MouseEnteredHandler;
-		this.MouseExited += MouseExitedHandler;
-		this.ButtonDown += ButtonDownHandler;
-		this.ButtonUp += ButtonUpHandler;
-		this.FocusEntered += FocusEnteredHandler;
-		this.FocusExited += FocusExitedHandler;
+	private void InitializeButtonSignalsHandlers()
+	{
+		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
+					= this.GetSignalConnectionList("MouseEntered");
+		bool condition = connections.Count > 0;
+
+		if (!condition)
+		{
+			this.MouseEntered += MouseEnteredHandler;
+			this.MouseExited += MouseExitedHandler;
+			this.ButtonDown += ButtonDownHandler;
+			this.ButtonUp += ButtonUpHandler;
+			this.FocusEntered += FocusEnteredHandler;
+			this.FocusExited += FocusExitedHandler;
+		}
+		
+	}
+	private void DisableButtonSignalsHandlers()
+	{
+		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
+					= this.GetSignalConnectionList("MouseEntered");
+		bool condition = connections.Count > 0;
+		
+		if (condition)
+		{
+			this.MouseEntered -= MouseEnteredHandler;
+			this.MouseExited -= MouseExitedHandler;
+			this.ButtonDown -= ButtonDownHandler;
+			this.ButtonUp -= ButtonUpHandler;
+			this.FocusEntered -= FocusEnteredHandler;
+			this.FocusExited -= FocusExitedHandler;
+		}
 	}
 
-	private void InitializeScene(){
+	private void InitializeScene()
+	{
 		this.SelfModulate = new Color();
 		this.FocusMode = FocusModeEnum.None;
 
@@ -109,7 +155,6 @@ public partial class IconButton : Button
 		
 		stateLayerContainer.MouseFilter = MouseFilterEnum.Ignore;
 
-		int marginsValue = 8;
 		marginContainer.AddThemeConstantOverride("margin_top", marginsValue);
 		marginContainer.AddThemeConstantOverride("margin_left", marginsValue);
 		marginContainer.AddThemeConstantOverride("margin_bottom", marginsValue);
@@ -131,22 +176,55 @@ public partial class IconButton : Button
 		string themeType = inputIhemeType;
 
 		theme.SetConstant("alphaValueForDisabled", themeType, 38);
-		
-		// theme.InitializeThemeColors(themeType);
-		
-		Dictionary<string, Color> colorsForTheme = new Dictionary<string, Color>
-		{
-			{"enabled", new Color()},
-			{"hovered", Globals.colorsDictionary["opacityPrimary8"]},
-			{"focused", Globals.colorsDictionary["opacityPrimary12"]},
-			{"pressed", Globals.colorsDictionary["opacityPrimary12"]},
-			{"disabled", new Color()},
-		};
 
-		InitializeStyleBoxes(theme, themeType, colorsForTheme);
+		styleboxDefaultColor = new Color();
+		styleboxHoverColor = Globals.colorsDictionary["opacityPrimary8"];
+		styleboxFocusColor = Globals.colorsDictionary["opacityPrimary12"];
+		styleboxPressedColor = Globals.colorsDictionary["opacityPrimary12"];
+		styleboxDisabledColor = Globals.colorsDictionary["neutral900"];
+	
+		theme.SetColor("styleboxDefaultColor", themeType, styleboxDefaultColor);
+		theme.SetColor("styleboxHoverColor", themeType, styleboxHoverColor);
+		theme.SetColor("styleboxFocusColor", themeType, styleboxFocusColor);
+		theme.SetColor("styleboxPressedColor", themeType, styleboxPressedColor);
+		theme.SetColor("styleboxDisabledColor", themeType, styleboxDisabledColor);
+
+		InitializeStyleBoxes(theme, themeType);
 
 		return theme;
 	}
+
+	private void InitializeStyleBoxes(Theme inputTheme, string inputIhemeType)
+	{		
+		Theme theme = inputTheme;
+		string themeType = inputIhemeType;
+
+		StyleBoxFlat styleBox;
+
+		Color styleboxDefaultColor = theme.GetColor("styleboxDefaultColor", themeType);
+		Color styleboxHoverColor = theme.GetColor("styleboxHoverColor", themeType);
+		Color styleboxFocusColor = theme.GetColor("styleboxFocusColor", themeType);
+		Color styleboxPressedColor = theme.GetColor("styleboxPressedColor", themeType);
+		Color styleboxDisabledColor = theme.GetColor("styleboxDisabledColor", themeType);
+
+		styleBox = InitializeSingleStylebox(styleboxDefaultColor);
+		theme.SetStylebox("enabled", themeType, styleBox);	
+
+		styleBox = InitializeSingleStylebox(styleboxHoverColor);
+		theme.SetStylebox("hovered", themeType, styleBox);
+
+		styleBox = InitializeSingleStylebox(styleboxFocusColor);
+		theme.SetStylebox("focused", themeType, styleBox);
+
+		styleBox = InitializeSingleStylebox(styleboxPressedColor);
+		theme.SetStylebox("pressed", themeType, styleBox);
+		
+		Color disabledStyleboxColor = styleboxDisabledColor;
+		disabledStyleboxColor.A = 0.38f;
+		styleBox = InitializeSingleStylebox(disabledStyleboxColor);
+		theme.SetStylebox("disabled", themeType, styleBox);
+	}
+
 
 	StyleBoxFlat AllCornerRadiuses(StyleBoxFlat styleBox, int value)
 	{
@@ -165,82 +243,62 @@ public partial class IconButton : Button
 		return styleBox;
 	}
 
-	private void InitializeStyleBoxes(Theme inputTheme, string inputIhemeType
-	, Dictionary<string, Color> inputColorsForStyleboxes)
-	{		
-		Theme theme = inputTheme;
-		string themeType = inputIhemeType;
-		Dictionary<string, Color> colors = inputColorsForStyleboxes;
+	// private void SetDisabled()
+	// {
 
-		string[] styleboxNames = theme.GetStyleboxList(themeType);
-		int numberOfStyleboxes = styleboxNames.Length;
+	// 	UpdateMyButtonState(IconButtonStates.Disabled);
 
-		Debug.Assert(colors.Count == numberOfStyleboxes, 
-			"Number of colors is not equal to number of styleboxes");
+	// 	icon.SetColor(global::Icon.IconColors.Neutral900);
+		
+	// 	Color iconModulate = icon.Modulate;
+	// 	iconModulate.A8 = (int) (this.Theme.GetConstant("alphaValueForDisabled", "IconButton") * 255 / 100);
+	// 	icon.Modulate = iconModulate;
+	// }
 
-		StyleBoxFlat styleBox;
-		for (int i = 0; i < numberOfStyleboxes; i++)
-		{	
-			string styleBoxName = styleboxNames[i];
-
-			styleBox = InitializeSingleStylebox(colors[styleBoxName]); //probably write try-catch block
-			theme.SetStylebox(styleboxNames[i], themeType, styleBox);
-		}
-
-		inputTheme = theme;
+	private string StateEnumToString(IconButtonStates state)
+	{
+		int index = (int) state;
+		return states[index];
 	}
 
-	private void SetDisabled()
-	{
-
-		StyleBox stylebox = this.Theme.GetStylebox("disabled", "IconButton");
+	private void UpdateIconButtonState(IconButtonStates state)
+	{	
+		string stringState = StateEnumToString(state);
+		StyleBox stylebox = this.Theme.GetStylebox(stringState, "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
-
-		icon.SetColor(global::Icon.IconColors.Neutral900);
-		
-		Color iconModulate = icon.Modulate;
-		iconModulate.A8 = (int) (this.Theme.GetConstant("alphaValueForDisabled", "IconButton") * 255 / 100);
-		icon.Modulate = iconModulate;
 	}
 
 	private void ButtonUpHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
+		UpdateIconButtonState(IconButtonStates.Enabled);
 		if (this.IsHovered())
 		{
-			stylebox = this.Theme.GetStylebox("hovered", "IconButton");
+			UpdateIconButtonState(IconButtonStates.Hovered);
 		}
-
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 
 	private void ButtonDownHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("pressed", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
+		UpdateIconButtonState(IconButtonStates.Pressed);
 	}
 
 	private void FocusExitedHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
+		UpdateIconButtonState(IconButtonStates.Enabled);
 	}
 
 	private void FocusEnteredHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("focused", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
+		UpdateIconButtonState(IconButtonStates.Focused);
 	}
 
 	private void MouseExitedHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
+		UpdateIconButtonState(IconButtonStates.Enabled);
 	}
 
 	private void MouseEnteredHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("hovered", "IconButton");
-		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
+		UpdateIconButtonState(IconButtonStates.Hovered);
 	}
 }

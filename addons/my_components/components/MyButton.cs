@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.Reflection;
 
 [Tool]
 
@@ -26,11 +28,11 @@ public partial class MyButton : PanelContainer
 	}
 
 
-	private Color styleboxDefault;
-	private Color styleboxPressed;
-	private Color styleboxDisabled;
-	private Color fontColorDefault;
-	private Color fontColorPressed;
+	private Color styleboxDefaultColor;
+	private Color styleboxPressedColor;
+	private Color styleboxDisabledColor;
+	private Color fontColorDefaultColor;
+	private Color fontColorPressedColor;
 
 
 	private Icon iconLeft = new Icon();
@@ -140,19 +142,19 @@ public partial class MyButton : PanelContainer
 	{	
 		if (color == MyButtonColors.Primary)
 		{
-			styleboxDefault = Globals.colorsDictionary["Primary"];
-			styleboxPressed = Globals.colorsDictionary["Secondary"];
-			styleboxDisabled = Globals.colorsDictionary["Neutral"];
-			fontColorDefault = Globals.colorsDictionary["White"];
-			fontColorPressed = Globals.colorsDictionary["Primary"];
+			styleboxDefaultColor = Globals.colorsDictionary["Primary"];
+			styleboxPressedColor = Globals.colorsDictionary["Secondary"];
+			styleboxDisabledColor = Globals.colorsDictionary["Neutral"];
+			fontColorDefaultColor = Globals.colorsDictionary["White"];
+			fontColorPressedColor = Globals.colorsDictionary["Primary"];
 		}
 		else
 		{
-			styleboxDefault = Globals.colorsDictionary["Secondary"];
-			styleboxPressed = Globals.colorsDictionary["Primary"];
-			styleboxDisabled = Globals.colorsDictionary["Neutral"];
-			fontColorDefault = Globals.colorsDictionary["Primary"];
-			fontColorPressed = Globals.colorsDictionary["White"];
+			styleboxDefaultColor = Globals.colorsDictionary["Secondary"];
+			styleboxPressedColor = Globals.colorsDictionary["Primary"];
+			styleboxDisabledColor = Globals.colorsDictionary["Neutral"];
+			fontColorDefaultColor = Globals.colorsDictionary["Primary"];
+			fontColorPressedColor = Globals.colorsDictionary["White"];
 		}	
 	}
 
@@ -186,6 +188,7 @@ public partial class MyButton : PanelContainer
 		if (value == true)
 		{
 			UpdateMyButtonState(MyButtonStates.Disabled);
+			
 		}
 		else
 		{
@@ -318,11 +321,11 @@ public partial class MyButton : PanelContainer
 
 		OnColorSet(this.MyButtonColor);
 
-		theme.SetColor("styleboxDefault", themeType, styleboxDefault);
-		theme.SetColor("styleboxPressed", themeType, styleboxPressed);
-		theme.SetColor("styleboxDisabled", themeType, styleboxDisabled);
-		theme.SetColor("fontColorDefault", themeType, fontColorDefault);
-		theme.SetColor("fontColorPressed", themeType, fontColorPressed);
+		theme.SetColor("styleboxDefaultColor", themeType, styleboxDefaultColor);
+		theme.SetColor("styleboxPressedColor", themeType, styleboxPressedColor);
+		theme.SetColor("styleboxDisabledColor", themeType, styleboxDisabledColor);
+		theme.SetColor("fontColorDefaultColor", themeType, fontColorDefaultColor);
+		theme.SetColor("fontColorPressedColor", themeType, fontColorPressedColor);
 	}
 
 
@@ -333,24 +336,24 @@ public partial class MyButton : PanelContainer
 
 		StyleBoxFlat styleBox;
 
-		Color primary = theme.GetColor("styleboxDefault", themeType);
-		Color secondary = theme.GetColor("styleboxPressed", themeType);
-		Color neutral = theme.GetColor("styleboxDisabled", themeType);
+		Color styleboxDefaultColor = theme.GetColor("styleboxDefaultColor", themeType);
+		Color styleboxPressedColor = theme.GetColor("styleboxPressedColor", themeType);
+		Color styleboxDisabledColor = theme.GetColor("styleboxDisabledColor", themeType);
 
-		styleBox = InitializeSingleStylebox(primary);
+		styleBox = InitializeSingleStylebox(styleboxDefaultColor);
 		theme.SetStylebox("enabled", themeType, styleBox);	
 
-		styleBox = InitializeSingleStylebox(primary);
+		styleBox = InitializeSingleStylebox(styleboxDefaultColor);
 		StyleboxSetShadow_1(styleBox);
 		theme.SetStylebox("hovered", themeType, styleBox);
 
-		styleBox = InitializeSingleStylebox(primary);
+		styleBox = InitializeSingleStylebox(styleboxDefaultColor);
 		theme.SetStylebox("focused", themeType, styleBox);
 
-		styleBox = InitializeSingleStylebox(secondary);
+		styleBox = InitializeSingleStylebox(styleboxPressedColor);
 		theme.SetStylebox("pressed", themeType, styleBox);
 		
-		Color disabledStyleboxColor = neutral;
+		Color disabledStyleboxColor = styleboxDisabledColor;
 		disabledStyleboxColor.A = 0.38f;
 		styleBox = InitializeSingleStylebox(disabledStyleboxColor);
 		theme.SetStylebox("disabled", themeType, styleBox);
@@ -397,9 +400,9 @@ public partial class MyButton : PanelContainer
 
 	private void ChangeIconAndLabelColor(MyButtonStates state)
 	{
-		Color color = this.Theme.GetColor("fontColorDefault", "MyButton");
+		Color color = this.Theme.GetColor("fontColorDefaultColor", "MyButton");
 		if (state == MyButtonStates.Pressed){
-			color = this.Theme.GetColor("fontColorPressed", "MyButton");
+			color = this.Theme.GetColor("fontColorPressedColor", "MyButton");
 		}
 		
 		label.AddThemeColorOverride("font_color", color);
@@ -408,12 +411,38 @@ public partial class MyButton : PanelContainer
 	}
 
 	private void InitializeButtonSignalsHandlers(){
-		button.MouseEntered += MouseEnteredHandler;
-		button.MouseExited += MouseExitedHandler;
-		button.ButtonDown += ButtonDownHandler;
-		button.ButtonUp += ButtonUpHandler;
-		button.FocusEntered += FocusEnteredHandler;
-		button.FocusExited += FocusExitedHandler;
+		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
+					= button.GetSignalConnectionList("MouseEntered");
+		bool condition = connections.Count > 0;
+		
+		if (!condition)
+		{
+			button.MouseEntered += MouseEnteredHandler;
+			button.MouseExited += MouseExitedHandler;
+			button.ButtonDown += ButtonDownHandler;
+			button.ButtonUp += ButtonUpHandler;
+			button.FocusEntered += FocusEnteredHandler;
+			button.FocusExited += FocusExitedHandler;
+		}
+		
+	}
+
+	private void DisableButtonSignalsHandlers()
+	{	
+		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
+					= button.GetSignalConnectionList("MouseEntered");
+		bool condition = connections.Count > 0;
+		
+		if (condition)
+		{
+			button.MouseEntered -= MouseEnteredHandler;
+			button.MouseExited -= MouseExitedHandler;
+			button.ButtonDown -= ButtonDownHandler;
+			button.ButtonUp -= ButtonUpHandler;
+			button.FocusEntered -= FocusEnteredHandler;
+			button.FocusExited -= FocusExitedHandler;
+		}
+		
 	}
 
 	private void ButtonUpHandler()
