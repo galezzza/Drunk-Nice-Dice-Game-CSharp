@@ -65,9 +65,9 @@ public partial class IconButton : Button
 		InitializeScene();
 			
 		themeScript theme = GD.Load<themeScript>("res://game/logic/themes/Icon button Theme.tres");
-		this.Theme = InitializeTheme(theme, this.Name);
+		this.Theme = InitializeTheme(theme, "IconButton");
 
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 		if (this.Disabled)
 		{
@@ -193,22 +193,22 @@ public partial class IconButton : Button
 	private void SetDisabled()
 	{
 
-		StyleBox stylebox = this.Theme.GetStylebox("disabled", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("disabled", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 
 		icon.SetColor(global::Icon.IconColors.Neutral900);
 		
 		Color iconModulate = icon.Modulate;
-		iconModulate.A8 = (int) (this.Theme.GetConstant("alphaValueForDisabled", this.Name) * 255 / 100);
+		iconModulate.A8 = (int) (this.Theme.GetConstant("alphaValueForDisabled", "IconButton") * 255 / 100);
 		icon.Modulate = iconModulate;
 	}
 
 	private void ButtonUpHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
 		if (this.IsHovered())
 		{
-			stylebox = this.Theme.GetStylebox("hovered", this.Name);
+			stylebox = this.Theme.GetStylebox("hovered", "IconButton");
 		}
 
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
@@ -216,31 +216,31 @@ public partial class IconButton : Button
 
 	private void ButtonDownHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("pressed", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("pressed", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 
 	private void FocusExitedHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 
 	private void FocusEnteredHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("focused", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("focused", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 
 	private void MouseExitedHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("enabled", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 
 	private void MouseEnteredHandler()
 	{
-		StyleBox stylebox = this.Theme.GetStylebox("hovered", this.Name);
+		StyleBox stylebox = this.Theme.GetStylebox("hovered", "IconButton");
 		stateLayerContainer.AddThemeStyleboxOverride("panel", stylebox);
 	}
 }
