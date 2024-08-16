@@ -15,6 +15,17 @@ public partial class Icon : TextureRect
 		Neutral900,
 		Error
 	}
+
+	private static Color[] colorsList = {
+			Globals.colorsDictionaryGroup["main"]["white"],
+			Globals.colorsDictionaryGroup["main"]["black"],
+			Globals.colorsDictionaryGroup["main"]["primary"],
+			Globals.colorsDictionaryGroup["main"]["secondary"],
+			Globals.colorsDictionaryGroup["main"]["neutral"],
+			Globals.colorsDictionaryGroup["primary"]["900"],
+			Globals.colorsDictionaryGroup["neutral"]["900"],
+			Globals.colorsDictionaryGroup["main"]["error"],
+		};
 	
 	[Export]
 	private IconColors color = IconColors.White;
@@ -33,18 +44,6 @@ public partial class Icon : TextureRect
 
 	private void UpdateIconColor(int colorIndex)
 	{	
-		Color[] colorsList = {
-			Globals.colorsDictionary["main"]["white"],
-			Globals.colorsDictionary["main"]["black"],
-			Globals.colorsDictionary["main"]["primary"],
-			Globals.colorsDictionary["main"]["secondary"],
-			Globals.colorsDictionary["main"]["neutral"],
-			Globals.colorsDictionary["primary"]["900"],
-			Globals.colorsDictionary["neutral"]["900"],
-			Globals.colorsDictionary["main"]["error"],
-
-		};
-
 		int index = (int) colorIndex;
 
 		SelfModulate = colorsList[index];
@@ -54,6 +53,11 @@ public partial class Icon : TextureRect
 	{
 		int index = (int) iconColor;
 		UpdateIconColor(index);
+	}
+
+	public Color GetColorByEnum(IconColors iconColor){
+		int index = (int) iconColor;
+		return colorsList[index];
 	}
 	
 }

@@ -47,6 +47,47 @@ public partial class AppColors : Node
         };
         return colors;
     }
+
+    public Dictionary<string, Color> GetAllColorsDictionary()
+	{	
+        Dictionary<string, Color> colors = new Dictionary<string, Color>();
+		Dictionary<string, Dictionary<string, Color>> colorsGroup = GetAllColorsDictionaryGroup();
+
+		for (int indexColorType = 0; indexColorType < colorsGroup.Count; indexColorType++)
+		{
+			string colorsTypeName = colorsGroup.ElementAt(indexColorType).Key;
+			Dictionary<string, Color> colorsNames = colorsGroup.ElementAt(indexColorType).Value;
+
+			for (int indexColorName = 0; indexColorName < colorsNames.Count; indexColorName++)
+			{
+				string colorName = colorsNames.ElementAt(indexColorName).Key;
+				Color color = colorsNames.ElementAt(indexColorName).Value;
+
+				colorName = ColorNaming(colorName, colorsTypeName, indexColorType);
+
+                colors.Add(colorName, color);
+			}
+		}
+        return colors;
+	}
+
+    private string FirstLetterToUpper(string str)
+	{
+		str = str.Substring(0, 1).ToUpper() + str.Substring(1);
+		return str;
+	}
+
+	private string ColorNaming(string colorName, string colorsTypeName, int indexColorType)
+	{
+		colorName = FirstLetterToUpper(colorName);
+
+		int indexOfColorsTypeThatWontBeRenamed = 0;
+		if (indexColorType != indexOfColorsTypeThatWontBeRenamed)
+		{
+			colorName = colorsTypeName + colorName;
+		}
+	    return colorName;
+	}
 }
 
 

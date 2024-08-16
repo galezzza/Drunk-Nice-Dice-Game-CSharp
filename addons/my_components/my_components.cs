@@ -16,6 +16,10 @@ public partial class my_components : EditorPlugin
 		Script scriptIconButton = GD.Load<Script>("res://addons/my_components/components/IconButton.cs");
 		Texture2D texIconButton = GD.Load<Texture2D>("res://addons/my_components/components/IconButton.png");
 		AddCustomType("IconButton", "Button", scriptIconButton, texIconButton);
+		
+		Script scriptMyButton = GD.Load<Script>("res://addons/my_components/components/MyButton.cs");
+		Texture2D texMyButton = GD.Load<Texture2D>("res://addons/my_components/components/MyButton.png");
+		AddCustomType("MyButton", "PanelContainer", scriptMyButton, texMyButton);
 	}
 
 	public override void _ExitTree()
@@ -24,6 +28,7 @@ public partial class my_components : EditorPlugin
 
 		RemoveCustomType("Icon");
 		RemoveCustomType("IconButton");
+		RemoveCustomType("MyButton");
 	}
 }
 #endif

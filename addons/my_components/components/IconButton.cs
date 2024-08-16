@@ -64,7 +64,7 @@ public partial class IconButton : Button
 	{
 		InitializeScene();
 			
-		themeScript theme = GD.Load<themeScript>("res://game/logic/themes/Icon button Theme.tres");
+		Theme theme = GD.Load<Theme>("res://game/logic/themes/Main Theme.tres");
 		this.Theme = InitializeTheme(theme, "IconButton");
 
 		StyleBox stylebox = this.Theme.GetStylebox("enabled", "IconButton");
@@ -125,21 +125,21 @@ public partial class IconButton : Button
 		marginContainer.GrowHorizontal = GrowDirection.Both;
 		marginContainer.GrowVertical = GrowDirection.Both;
 	}
-	private themeScript InitializeTheme(themeScript inputTheme, string inputIhemeType)
+	private Theme InitializeTheme(Theme inputTheme, string inputIhemeType)
 	{
-		themeScript theme = inputTheme;
+		Theme theme = inputTheme;
 		string themeType = inputIhemeType;
 
 		theme.SetConstant("alphaValueForDisabled", themeType, 38);
 		
-		theme.InitializeThemeColors(themeType);
+		// theme.InitializeThemeColors(themeType);
 		
 		Dictionary<string, Color> colorsForTheme = new Dictionary<string, Color>
 		{
 			{"enabled", new Color()},
-			{"hovered", theme.GetColor("opacityPrimary8", themeType)},
-			{"focused", theme.GetColor("opacityPrimary12", themeType)},
-			{"pressed", theme.GetColor("opacityPrimary12", themeType)},
+			{"hovered", Globals.colorsDictionary["opacityPrimary8"]},
+			{"focused", Globals.colorsDictionary["opacityPrimary12"]},
+			{"pressed", Globals.colorsDictionary["opacityPrimary12"]},
 			{"disabled", new Color()},
 		};
 
@@ -183,7 +183,7 @@ public partial class IconButton : Button
 		{	
 			string styleBoxName = styleboxNames[i];
 
-			styleBox = InitializeSingleStylebox(colors[styleBoxName]);
+			styleBox = InitializeSingleStylebox(colors[styleBoxName]); //probably write try-catch block
 			theme.SetStylebox(styleboxNames[i], themeType, styleBox);
 		}
 

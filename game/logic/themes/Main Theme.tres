@@ -1,0 +1,66 @@
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cj5mmbbgix3ro"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5uj0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcntl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwacm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mg1k4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bjlb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5g35v"]
+bg_color = Color(0.929412, 0.937255, 0.972549, 0.38)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qxmd"]
+bg_color = Color(0.517647, 0.607843, 0.92549, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f0oyk"]
+bg_color = Color(0.517647, 0.607843, 0.92549, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3443"]
+bg_color = Color(0.517647, 0.607843, 0.92549, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j1p4"]
+bg_color = Color(0.85098, 0.929412, 0.988235, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[resource]
+IconButton/styles/disabled = SubResource("StyleBoxFlat_a5uj0")
+IconButton/styles/enabled = SubResource("StyleBoxFlat_fcntl")
+IconButton/styles/focused = SubResource("StyleBoxFlat_dwacm")
+IconButton/styles/hovered = SubResource("StyleBoxFlat_mg1k4")
+IconButton/styles/pressed = SubResource("StyleBoxFlat_3bjlb")
+MyButton/colors/fontColorDefault = Color(1, 1, 1, 1)
+MyButton/colors/fontColorPressed = Color(0.517647, 0.607843, 0.92549, 1)
+MyButton/colors/styleboxDefault = Color(0.517647, 0.607843, 0.92549, 1)
+MyButton/colors/styleboxDisabled = Color(0.929412, 0.937255, 0.972549, 1)
+MyButton/colors/styleboxPressed = Color(0.85098, 0.929412, 0.988235, 1)
+MyButton/styles/disabled = SubResource("StyleBoxFlat_5g35v")
+MyButton/styles/enabled = SubResource("StyleBoxFlat_3qxmd")
+MyButton/styles/focused = SubResource("StyleBoxFlat_f0oyk")
+MyButton/styles/hovered = SubResource("StyleBoxFlat_k3443")
+MyButton/styles/pressed = SubResource("StyleBoxFlat_2j1p4")
