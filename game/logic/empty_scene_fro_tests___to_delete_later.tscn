@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bf3kq3mdnf0o4"]
+[gd_scene load_steps=11 format=3 uid="uid://bf3kq3mdnf0o4"]
 
 [ext_resource type="Texture2D" uid="uid://72bba5claq1a" path="res://game/assets/icons/svg/Account circle.svg" id="1_l5de6"]
 [ext_resource type="Script" path="res://addons/my_components/components/Icon.cs" id="2_hnbgt"]
@@ -6,8 +6,17 @@
 [ext_resource type="Script" path="res://addons/my_components/components/MyButton.cs" id="4_q7sc8"]
 [ext_resource type="Texture2D" uid="uid://ccpi7ys5e7odm" path="res://game/assets/icons/svg/Add.svg" id="5_a364o"]
 [ext_resource type="Script" path="res://addons/my_components/components/IconButton.cs" id="6_fbfp3"]
+[ext_resource type="Script" path="res://addons/my_components/components/ToggleButton.cs" id="7_dfuts"]
+[ext_resource type="Texture2D" uid="uid://c0ur5e1vlq6kd" path="res://game/assets/icons/svg/Arrow upward.svg" id="8_f0tr3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lgc4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flnvn"]
+bg_color = Color(0.517647, 0.607843, 0.92549, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5l76b"]
 bg_color = Color(0.517647, 0.607843, 0.92549, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
@@ -29,31 +38,55 @@ offset_bottom = 24.0
 texture = ExtResource("1_l5de6")
 script = ExtResource("2_hnbgt")
 
-[node name="MyButton" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 55.0
-offset_top = 133.0
-offset_right = 104.0
-offset_bottom = 176.0
-mouse_filter = 2
-theme = ExtResource("3_40kxg")
-theme_override_styles/panel = SubResource("StyleBoxFlat_3lgc4")
-script = ExtResource("4_q7sc8")
-TextureIconRight = ExtResource("5_a364o")
-ShowLeftIcon = true
-ShowRightIcon = true
-LabelText = "Label"
-
 [node name="IconButton" type="Button" parent="."]
 self_modulate = Color(0, 0, 0, 0)
 layout_mode = 0
-offset_left = 93.0
-offset_top = 46.0
-offset_right = 141.0
-offset_bottom = 94.0
+offset_left = 85.0
+offset_top = 25.0
+offset_right = 133.0
+offset_bottom = 73.0
 focus_mode = 0
 theme = ExtResource("3_40kxg")
 icon = Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":ExtResource("1_l5de6"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":ExtResource("2_hnbgt"),"color":0)
 
 script = ExtResource("6_fbfp3")
 IconTexture = ExtResource("1_l5de6")
+
+[node name="MyButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 14.0
+offset_right = 324.0
+offset_bottom = 58.0
+mouse_filter = 2
+theme = ExtResource("3_40kxg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_flnvn")
+script = ExtResource("4_q7sc8")
+TextureIconRight = ExtResource("5_a364o")
+ShowLeftIcon = true
+ShowRightIcon = true
+LabelText = "Label"
+
+[node name="CheckBox" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 82.0
+offset_right = 74.0
+offset_bottom = 106.0
+focus_mode = 0
+text = "ergdgdfgdf"
+
+[node name="ToggleButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 73.0
+offset_top = 134.0
+offset_right = 113.0
+offset_bottom = 174.0
+mouse_filter = 2
+theme = ExtResource("3_40kxg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5l76b")
+script = ExtResource("7_dfuts")
+TextureIconLeft = ExtResource("5_a364o")
+TextureIconRight = ExtResource("8_f0tr3")
+ShowLeftIcon = true
+LabelText = "Toggle button"

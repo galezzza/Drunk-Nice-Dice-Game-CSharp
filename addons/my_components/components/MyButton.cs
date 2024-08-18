@@ -10,7 +10,7 @@ using System.Reflection;
 
 public partial class MyButton : PanelContainer
 {
-	private enum MyButtonStates
+	public enum MyButtonStates
 	{
 		Enabled,
 		Hovered,
@@ -91,8 +91,7 @@ public partial class MyButton : PanelContainer
 	}
 
 	private string _labelText;
-	[Export]
-	public string LabelText
+	[Export] public string LabelText
 	{
 		get => _labelText;
 		set
@@ -188,7 +187,7 @@ public partial class MyButton : PanelContainer
 		if (value == true)
 		{
 			UpdateMyButtonState(MyButtonStates.Disabled);
-			
+			DisableButtonSignalsHandlers();
 		}
 		else
 		{
@@ -218,8 +217,9 @@ public partial class MyButton : PanelContainer
 		// if (!Engine.IsEditorHint())
 		// {
 		// 	// Code to execute when in game.
-		// }	
+		// }
 	}
+
 
 	private void CreateNodeTree()
 	{
@@ -388,7 +388,7 @@ public partial class MyButton : PanelContainer
 		return states[index];
 	}
 
-	private void UpdateMyButtonState(MyButtonStates state)
+	protected void UpdateMyButtonState(MyButtonStates state)
 	{	
 		string stringState = StateEnumToString(state);
 		StyleBox stylebox = this.Theme.GetStylebox(stringState, "MyButton");
@@ -412,7 +412,7 @@ public partial class MyButton : PanelContainer
 
 	private void InitializeButtonSignalsHandlers(){
 		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
-					= button.GetSignalConnectionList("MouseEntered");
+					= button.GetSignalConnectionList("mouse_entered");
 		bool condition = connections.Count > 0;
 		
 		if (!condition)
@@ -430,7 +430,7 @@ public partial class MyButton : PanelContainer
 	private void DisableButtonSignalsHandlers()
 	{	
 		Godot.Collections.Array<Godot.Collections.Dictionary> connections 
-					= button.GetSignalConnectionList("MouseEntered");
+					= button.GetSignalConnectionList("mouse_entered");
 		bool condition = connections.Count > 0;
 		
 		if (condition)
@@ -445,7 +445,7 @@ public partial class MyButton : PanelContainer
 		
 	}
 
-	private void ButtonUpHandler()
+	protected virtual void ButtonUpHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Enabled);
 		if (button.IsHovered())
@@ -454,28 +454,40 @@ public partial class MyButton : PanelContainer
 		}
 	}
 
-	private void ButtonDownHandler()
+	protected virtual void ButtonDownHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Pressed);
 	}
 
-	private void FocusExitedHandler()
+	protected virtual void FocusExitedHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Enabled);
 	}
 
-	private void FocusEnteredHandler()
+	protected virtual void FocusEnteredHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Focused);
 	}
 
-	private void MouseExitedHandler()
+	protected virtual void MouseExitedHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Enabled);
 	}
 
-	private void MouseEnteredHandler()
+	protected virtual void MouseEnteredHandler()
 	{
 		UpdateMyButtonState(MyButtonStates.Hovered);
 	}
+
+	//To do 
+	//1)Maybe crete current-state property
+	//-On set will call UpdateMyButtonState()
+	//2)Maybe separate theme and structure to different classes???
+	//-MyButton look kinda big, mb thats would help
+	//-But 
+	//3)Create string property that will have "MyButton" -- themeType
+	//-Thats will help to use separate themeType for children without overriding it
+	//4)Use theme as global???
+	//5)What about create toggle base class that will use for toggleButton, checkbox, radioButton and switch??
+	//6)Rebase MyButton and ToggleButton from Panel Container to Button
 }
