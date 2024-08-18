@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.ComponentModel.Design;
 
+[Tool]
+
 public partial class Icon : TextureRect
 {
 	public enum IconColors
@@ -27,17 +29,26 @@ public partial class Icon : TextureRect
 			Globals.colorsDictionaryGroup["main"]["error"],
 		};
 	
-	[Export]
-	private IconColors color = IconColors.White;
+	private IconColors _colorIcon = IconColors.White;
+	[Export] public IconColors ColorIcon
+	{
+		get => _colorIcon;
+		set
+		{
+			_colorIcon = value;
+			SetColor(value);
+		}
+	}
+	
 
 	public Icon()
 	{
-		this.color = IconColors.White;
+		this.ColorIcon = IconColors.White;
 	}
 
 	public override void _Ready()
 	{
-		int index = (int) color;
+		int index = (int) ColorIcon;
 		UpdateIconColor(index);
 	}
 
